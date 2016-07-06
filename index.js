@@ -86,11 +86,10 @@ var marvel = marvelFactory({
 //   console.log(count);
 // });
 
-
-// Make a call using the api
 marvel('/characters').then(function(json) { 
-  var finalCount = 0;
-  json.data.results.reduce(function(accumulator, character){
+      var container = document.querySelector('characters');
+  var count = 0;
+  var noImageArray = json.data.results.filter(function(character){
 
     var characterContainer = document.createElement('character');
 
@@ -119,22 +118,74 @@ marvel('/characters').then(function(json) {
 
 
     // Add the character tag to the overall list of characters
-    var container = document.querySelector('characters'); // <characters><character><character-name>3D-Man</character-name><img src="..." /></character></characters>
+ // <characters><character><character-name>3D-Man</character-name><img src="..." /></character></characters>
     // container.appendChild(characterContainer); 
 
-    if (imgPath !== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'){
-      container.appendChild(characterContainer)
-      return {count:accumulator.count};
+    if (imgPath === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'){
+     return true;
+  
     } else {
-      if (typeof accumulator.count==='undefined'){
-        return {count:1};
-      }
-      return {count:accumulator.count++};
+          container.appendChild(characterContainer)
+      return false;
     }
 
   });
-
+  console.log(noImageArray.length);
 });
+
+
+
+// // Make a call using the api
+// marvel('/characters').then(function(json) { 
+//   var finalCount = 0;
+//   json.data.results.reduce(function(accumulator, character){
+
+//     var characterContainer = document.createElement('character');
+
+//      // Any operations specific to this character
+//     var imgPath = character.thumbnail.path + '.' + character.thumbnail.extension;
+//     var name = character.name;
+
+//     var img = document.createElement('img'); // Create an element node
+//     img.setAttribute('src', imgPath); // Set some properties on the node
+
+//     var nameTag = document.createElement('character-name'); // <character-name>
+
+//     var nameTextNode = document.createTextNode(name); // 3D-Man
+//     var nameLinkNode = document.createElement('a'); // <a>
+//     nameLinkNode.setAttribute('href', 'https://www.google.com/#q=' + encodeURIComponent(name));
+//     nameLinkNode.appendChild(nameTextNode); // <a href="...">3D-Man</a>
+
+//     nameTag.appendChild(nameLinkNode); // <character-name><a href="...">3D-man</a></character-name>
+
+//     // Add different properties for a single character
+//     characterContainer.appendChild(nameTag); // <character><character-name>3D-Man</character-name></character>
+//     characterContainer.appendChild(img); // <character><character-name>3D-Man</character-name><img src="..." /></character>
+//     // var letTag = document.createElement('letter-container');
+//     // // var letterContainer = document.querySelector('letter')
+//     // letTag.appendChild(nameTag);
+
+
+//     // Add the character tag to the overall list of characters
+//     var container = document.querySelector('characters'); // <characters><character><character-name>3D-Man</character-name><img src="..." /></character></characters>
+//     // container.appendChild(characterContainer); 
+
+//     if (imgPath !== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'){
+//       container.appendChild(characterContainer)
+//       return {count:accumulator.count};
+//     } else {
+//       if (typeof accumulator.count==='undefined'){
+//         return {count:1};
+//       } else{
+//         var characterWithCount = character;
+//         characterWithCount.count= accumulator.count++;
+//         return characterWithCount;
+//     }
+//   }
+
+//   });
+
+// });
 
 // marvel('/characters').then(function(json) { 
 //   json.data.results.reduce(function(character){
